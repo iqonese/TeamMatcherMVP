@@ -24,6 +24,36 @@ if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY")
   console.log("Firebase not configured. Running in Local Storage Mode.");
 }
 
+// --- Safe storage helper ---
+const safeStorage = {
+  _data: {},
+  getItem(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return this._data[key] || null;
+    }
+  },
+  setItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      this._data[key] = String(value);
+    }
+  }
+};
+
+// --- Safe promise timeout helper ---
+const promiseTimeout = (promise, ms) => {
+  let timeout = new Promise((_, reject) => {
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      reject(new Error("Database connection timed out."));
+    }, ms);
+  });
+  return Promise.race([promise, timeout]);
+};
+
 // --- State ---
 let currentUser = null;
 let allStudents = []; // Will be fetched from Firestore / Local Storage
@@ -36,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderScheduleGrid();
   
   // Try to load user from localStorage
-  const savedUser = localStorage.getItem('teamMatchUser');
+  const savedUser = safeStorage.getItem('teamMatchUser');
   if (savedUser) {
     currentUser = JSON.parse(savedUser);
     fillProfileForm();
@@ -49,14 +79,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function fetchTeammates() {
   try {
     if (useFirebase && db) {
-      const snapshot = await db.collection('students').get();
+      // Limit Firestore fetch to 1.5s to prevent hanging on bad connections/configs
+      const snapshot = await promiseTimeout(db.collection('students').get(), 1500);
       allStudents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } else {
       throw new Error("Running in Local Storage database mode.");
     }
   } catch (err) {
     console.warn("Database notice:", err.message);
-    const localStudents = localStorage.getItem('teamMatchStudents');
+    const localStudents = safeStorage.getItem('teamMatchStudents');
     allStudents = localStudents ? JSON.parse(localStudents) : [];
   }
   
@@ -69,15 +100,16 @@ async function fetchTeammates() {
 async function saveStudentToDb(student) {
   if (useFirebase && db) {
     try {
-      await db.collection('students').doc(student.email).set(student);
+      // Limit Firestore write to 1.5s
+      await promiseTimeout(db.collection('students').doc(student.email).set(student), 1500);
       return;
     } catch (err) {
-      console.error("Firebase write failed, falling back to local storage:", err);
+      console.error("Firebase write failed or timed out, falling back to local storage:", err);
     }
   }
   
   // Local storage DB write
-  const localStudentsStr = localStorage.getItem('teamMatchStudents');
+  const localStudentsStr = safeStorage.getItem('teamMatchStudents');
   let localStudents = localStudentsStr ? JSON.parse(localStudentsStr) : [];
   
   // Remove existing record for this email to update it
@@ -85,7 +117,7 @@ async function saveStudentToDb(student) {
   
   // Save with id
   localStudents.push({ id: student.email, ...student });
-  localStorage.setItem('teamMatchStudents', JSON.stringify(localStudents));
+  safeStorage.setItem('teamMatchStudents', JSON.stringify(localStudents));
 }
 
 // --- Seeding Engine ---
@@ -235,14 +267,15 @@ async function seedDemoProfiles() {
         const docRef = db.collection('students').doc(s.email);
         batch.set(docRef, s);
       });
-      await batch.commit();
+      // Limit Firestore batch write to 2.0s
+      await promiseTimeout(batch.commit(), 2000);
     } catch (err) {
-      console.error("Firebase batch save failed, saving locally:", err);
+      console.error("Firebase batch save failed or timed out, saving locally:", err);
     }
   }
   
   // Always save locally as well so local matches work
-  const localStudentsStr = localStorage.getItem('teamMatchStudents');
+  const localStudentsStr = safeStorage.getItem('teamMatchStudents');
   let localStudents = localStudentsStr ? JSON.parse(localStudentsStr) : [];
   
   generated.forEach(g => {
@@ -250,7 +283,7 @@ async function seedDemoProfiles() {
     localStudents.push({ id: g.email, ...g });
   });
   
-  localStorage.setItem('teamMatchStudents', JSON.stringify(localStudents));
+  safeStorage.setItem('teamMatchStudents', JSON.stringify(localStudents));
   
   showToast("Successfully generated 50 demo profiles!");
   await fetchTeammates();
@@ -330,7 +363,7 @@ async function submitProfile(e) {
   try {
     // Save to database / local wrapper
     await saveStudentToDb(currentUser);
-    localStorage.setItem('teamMatchUser', JSON.stringify(currentUser));
+    safeStorage.setItem('teamMatchUser', JSON.stringify(currentUser));
     showToast("Profile saved successfully!");
     showPage('matches');
     await fetchTeammates(); // Refresh list
