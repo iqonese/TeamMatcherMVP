@@ -1,0 +1,74 @@
+[debug] [2026-05-08T10:34:57.248Z] ----------------------------------------------------------------------
+[debug] [2026-05-08T10:34:57.250Z] Command:       /opt/homebrew/Cellar/node/25.2.1/bin/node /opt/homebrew/bin/firebase init hosting
+[debug] [2026-05-08T10:34:57.250Z] CLI Version:   15.17.0
+[debug] [2026-05-08T10:34:57.250Z] Platform:      darwin
+[debug] [2026-05-08T10:34:57.250Z] Node Version:  v25.2.1
+[debug] [2026-05-08T10:34:57.250Z] Time:          Fri May 08 2026 15:34:57 GMT+0500 (Kazakhstan Time)
+[debug] [2026-05-08T10:34:57.250Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/iqonese/Desktop/capstone
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-05-08T10:34:57.503Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-08T10:34:57.503Z] > authorizing via signed-in user (iqonese@gmail.com)
+[debug] [2026-05-08T10:34:57.503Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:34:57.503Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:34:57.503Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher [none]
+[debug] [2026-05-08T10:34:58.345Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher 403
+[debug] [2026-05-08T10:34:58.345Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-05-08T10:34:58.346Z] Request to https://firebase.googleapis.com/v1beta1/projects/teammatcher had HTTP Error: 403, The caller does not have permission
+[debug] [2026-05-08T10:34:58.639Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/teammatcher had HTTP Error: 403, The caller does not have permission
+    at responseToError (/opt/homebrew/lib/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/opt/homebrew/lib/node_modules/firebase-tools/lib/apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[error] 
+[error] Error: Failed to get Firebase project teammatcher. Please make sure the project exists and your account has permission to access it.
+[debug] [2026-05-08T10:35:05.226Z] ----------------------------------------------------------------------
+[debug] [2026-05-08T10:35:05.233Z] Command:       /opt/homebrew/Cellar/node/25.2.1/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2026-05-08T10:35:05.233Z] CLI Version:   15.17.0
+[debug] [2026-05-08T10:35:05.233Z] Platform:      darwin
+[debug] [2026-05-08T10:35:05.233Z] Node Version:  v25.2.1
+[debug] [2026-05-08T10:35:05.233Z] Time:          Fri May 08 2026 15:35:05 GMT+0500 (Kazakhstan Time)
+[debug] [2026-05-08T10:35:05.233Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-08T10:35:05.535Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-08T10:35:05.535Z] > authorizing via signed-in user (iqonese@gmail.com)
+[debug] [2026-05-08T10:35:05.535Z] [iam] checking project teammatcher for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-05-08T10:35:05.536Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:35:05.536Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:35:05.536Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions [none]
+[debug] [2026-05-08T10:35:05.536Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions  x-goog-user-project=teammatcher
+[debug] [2026-05-08T10:35:05.536Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-05-08T10:35:06.055Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions 403
+[debug] [2026-05-08T10:35:06.056Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions {"error":{"code":403,"message":"Caller does not have required permission to use project teammatcher. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=teammatcher and then retry. Propagation of the new permission may take a few minutes.","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"USER_PROJECT_DENIED","domain":"googleapis.com","metadata":{"consoleUrl":"https://console.developers.google.com/iam-admin/iam?project=teammatcher","service":"cloudresourcemanager.googleapis.com","consumer":"projects/teammatcher","containerInfo":"teammatcher"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Caller does not have required permission to use project teammatcher. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=teammatcher and then retry. Propagation of the new permission may take a few minutes."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developer console IAM admin","url":"https://console.developers.google.com/iam-admin/iam?project=teammatcher"}]}]}}
+[debug] [2026-05-08T10:35:06.056Z] [iam] error while checking permissions, command may fail: Request to https://cloudresourcemanager.googleapis.com/v1/projects/teammatcher:testIamPermissions had HTTP Error: 403, Caller does not have required permission to use project teammatcher. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=teammatcher and then retry. Propagation of the new permission may take a few minutes.
+[debug] [2026-05-08T10:35:06.056Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:35:06.056Z] Checked if tokens are valid: true, expires at: 1778239693943
+[debug] [2026-05-08T10:35:06.057Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher [none]
+[debug] [2026-05-08T10:35:06.591Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher 403
+[debug] [2026-05-08T10:35:06.591Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/teammatcher {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-05-08T10:35:06.592Z] Request to https://firebase.googleapis.com/v1beta1/projects/teammatcher had HTTP Error: 403, The caller does not have permission
+[debug] [2026-05-08T10:35:06.850Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/teammatcher had HTTP Error: 403, The caller does not have permission
+    at responseToError (/opt/homebrew/lib/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/opt/homebrew/lib/node_modules/firebase-tools/lib/apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[error] 
+[error] Error: Failed to get Firebase project teammatcher. Please make sure the project exists and your account has permission to access it.

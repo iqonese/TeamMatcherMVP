@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeamMatch — Find Your Perfect Academic Team</title>
+  <meta name="description" content="TeamMatch helps students find compatible teammates for academic projects by matching skills, interests, schedules, and project goals." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo" id="logo-home">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">TeamMatch</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link" id="nav-home" onclick="showPage('home')">Home</a>
+        <a href="#" class="nav-link" id="nav-profile" onclick="showPage('profile')">My Profile</a>
+        <a href="#" class="nav-link" id="nav-matches" onclick="showPage('matches')">Find Teammates</a>
+        <a href="#" class="nav-link" id="nav-feedback" onclick="showPage('feedback')">Feedback</a>
+      </div>
+      <button class="btn-primary nav-cta" id="get-started-nav" onclick="showPage('profile')">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- ==================== HOME PAGE ==================== -->
+  <div id="page-home" class="page active">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge">🎓 Academic Project Matching</div>
+        <h1 class="hero-title">Find Teammates<br /><span class="gradient-text">Who Complement You</span></h1>
+        <p class="hero-subtitle">Enter your skills, interests, and schedule. Our smart matching system connects you with compatible teammates who share your goals and balance your strengths.</p>
+        <div class="hero-cta-group">
+          <button class="btn-primary btn-lg" id="hero-start-btn" onclick="showPage('profile')">
+            <span>Create Your Profile</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn-ghost btn-lg" id="hero-browse-btn" onclick="showPage('matches')">Browse Matches</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-number">250+</span><span class="stat-label">Students</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-number">89%</span><span class="stat-label">Match Rate</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-number">40+</span><span class="stat-label">Projects</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card card-a">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2)">S</div>
+          <div class="fc-info"><strong>Sara K.</strong><span>UI/UX Design · Frontend</span></div>
+          <span class="fc-badge">Design</span>
+        </div>
+        <div class="floating-card card-b">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c)">M</div>
+          <div class="fc-info"><strong>Marcus T.</strong><span>Python · Data Science</span></div>
+          <span class="fc-badge match">95% Match</span>
+        </div>
+        <div class="floating-card card-c">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">J</div>
+          <div class="fc-info"><strong>Jin L.</strong><span>Presentation · Research</span></div>
+          <span class="fc-badge">Soft Skills</span>
+        </div>
+        <div class="match-connector"></div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section how-it-works" id="how">
+      <div class="section-header">
+        <span class="section-tag">How It Works</span>
+        <h2>Three Steps to Your<br /><span class="gradient-text">Ideal Team</span></h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card" style="--delay:0s">
+          <div class="step-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">📝</div>
+          <div class="step-num">01</div>
+          <h3>Build Your Profile</h3>
+          <p>Share your technical skills, soft skills, weekly availability, and the kind of project you're excited about.</p>
+        </div>
+        <div class="step-card" style="--delay:.1s">
+          <div class="step-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🔍</div>
+          <div class="step-num">02</div>
+          <h3>Smart Matching</h3>
+          <p>Our algorithm weighs skill complementarity, schedule overlap, and shared interests to score potential teammates.</p>
+        </div>
+        <div class="step-card" style="--delay:.2s">
+          <div class="step-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🤝</div>
+          <div class="step-num">03</div>
+          <h3>Connect & Build</h3>
+          <p>Review ranked matches, send connection requests, and start building something amazing together.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section features">
+      <div class="section-header">
+        <span class="section-tag">Features</span>
+        <h2>Everything You Need to<br /><span class="gradient-text">Team Up Right</span></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card feature-large">
+          <div class="feature-icon">🎯</div>
+          <h3>Skill Complementarity</h3>
+          <p>We pair programmers with designers, researchers with presenters — building well-rounded teams that cover all bases.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗓️</div>
+          <h3>Schedule Matching</h3>
+          <p>Overlap detection ensures your team can actually meet and collaborate effectively.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3>Interest Alignment</h3>
+          <p>Shared passion for the same project topics means higher motivation and better outcomes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⭐</div>
+          <h3>Match Score</h3>
+          <p>Transparent compatibility percentage so you know exactly why a teammate is recommended.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Feedback Loop</h3>
+          <p>Post-project ratings help continuously improve match quality for future students.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="logo"><span class="logo-icon">⚡</span><span class="logo-text">TeamMatch</span></div>
+        <p>Helping students build better academic teams.</p>
+        <p class="footer-copy">© 2026 TeamMatch Capstone Project</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==================== PROFILE PAGE ==================== -->
+  <div id="page-profile" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Build Your <span class="gradient-text">Profile</span></h1>
+        <p>Tell us about yourself so we can find your best teammates</p>
+      </div>
+
+      <form class="profile-form" id="profileForm" onsubmit="submitProfile(event)">
+
+        <!-- Basic Info -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>👤</span> Basic Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" placeholder="e.g. Alex Johnson" required />
+            </div>
+            <div class="form-group">
+              <label for="major">Major / Course</label>
+              <input type="text" id="major" placeholder="e.g. Computer Science" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="year">Year Level</label>
+              <select id="year" required>
+                <option value="">Select year</option>
+                <option>Freshman (1st Year)</option>
+                <option>Sophomore (2nd Year)</option>
+                <option>Junior (3rd Year)</option>
+                <option>Senior (4th Year)</option>
+                <option>Graduate Student</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="your@university.edu" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Skills -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>💻</span> Technical Skills</h3>
+          <p class="form-hint">Click all that apply to you</p>
+          <div class="tag-grid" id="techSkills">
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Python</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">JavaScript</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Java</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">C/C++</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">React / Vue</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Machine Learning</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Data Analysis</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">UI/UX Design</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Figma</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Databases / SQL</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Mobile Dev</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Cloud / DevOps</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Cybersecurity</button>
+            <button type="button" class="tag-btn" data-group="tech" onclick="toggleTag(this)">Game Dev</button>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>🌟</span> Soft Skills</h3>
+          <p class="form-hint">Select your strongest non-technical strengths</p>
+          <div class="tag-grid" id="softSkills">
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Leadership</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Public Speaking</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Research</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Writing</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Project Management</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Creative Thinking</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Problem Solving</button>
+            <button type="button" class="tag-btn" data-group="soft" onclick="toggleTag(this)">Communication</button>
+          </div>
+        </div>
+
+        <!-- Project Interests -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>🚀</span> Project Interests</h3>
+          <p class="form-hint">What topics excite you most?</p>
+          <div class="tag-grid" id="projectInterests">
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">AI / Chatbot</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Web Application</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Mobile App</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Data Dashboard</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Social Impact</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Education Tech</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Health & Wellness</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Sustainability</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Fintech</button>
+            <button type="button" class="tag-btn" data-group="interest" onclick="toggleTag(this)">Gaming</button>
+          </div>
+        </div>
+
+        <!-- Schedule -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>🗓️</span> Weekly Availability</h3>
+          <p class="form-hint">When are you generally free to collaborate?</p>
+          <div class="schedule-grid" id="scheduleGrid">
+            <!-- JS generated -->
+          </div>
+        </div>
+
+        <!-- Role Preference -->
+        <div class="form-section">
+          <h3 class="form-section-title"><span>🎭</span> Preferred Team Role</h3>
+          <div class="role-grid">
+            <label class="role-card" id="role-leader">
+              <input type="radio" name="role" value="Leader" />
+              <div class="role-icon">👑</div>
+              <div class="role-name">Team Leader</div>
+              <div class="role-desc">Drive direction & coordinate</div>
+            </label>
+            <label class="role-card" id="role-dev">
+              <input type="radio" name="role" value="Developer" />
+              <div class="role-icon">💻</div>
+              <div class="role-name">Developer</div>
+              <div class="role-desc">Build & implement features</div>
+            </label>
+            <label class="role-card" id="role-designer">
+              <input type="radio" name="role" value="Designer" />
+              <div class="role-icon">🎨</div>
+              <div class="role-name">Designer</div>
+              <div class="role-desc">Craft visuals & UX</div>
+            </label>
+            <label class="role-card" id="role-researcher">
+              <input type="radio" name="role" value="Researcher" />
+              <div class="role-icon">🔬</div>
+              <div class="role-name">Researcher</div>
+              <div class="role-desc">Gather data & insights</div>
+            </label>
+            <label class="role-card" id="role-presenter">
+              <input type="radio" name="role" value="Presenter" />
+              <div class="role-icon">🎤</div>
+              <div class="role-name">Presenter</div>
+              <div class="role-desc">Communicate & pitch ideas</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary btn-lg" id="save-profile-btn">
+            <span>Save Profile & Find Matches</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MATCHES PAGE ==================== -->
+  <div id="page-matches" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Your <span class="gradient-text">Teammate Matches</span></h1>
+        <p id="matches-subtitle">Recommended based on skill compatibility, shared interests, and schedule overlap</p>
+      </div>
+
+      <div class="matches-controls">
+        <div class="filter-group">
+          <span class="filter-label">Filter by:</span>
+          <button class="filter-btn active" id="filter-all" onclick="filterMatches('all', this)">All</button>
+          <button class="filter-btn" id="filter-tech" onclick="filterMatches('tech', this)">Technical</button>
+          <button class="filter-btn" id="filter-design" onclick="filterMatches('design', this)">Design</button>
+          <button class="filter-btn" id="filter-soft" onclick="filterMatches('soft', this)">Soft Skills</button>
+        </div>
+        <div class="control-actions" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <div class="sort-group">
+            <label for="sort-select" class="filter-label">Sort by:</label>
+            <select id="sort-select" onchange="sortMatches(this.value)">
+              <option value="score">Match Score</option>
+              <option value="name">Name</option>
+              <option value="skills">Skills Count</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="btn-generate-demo" onclick="seedDemoProfiles()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.4); padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+            <span>⚡ Seed 50 Demo Profiles</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="matches-grid" id="matchesGrid">
+        <!-- JS generated -->
+      </div>
+
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-icon">🔍</div>
+        <h3>No matches yet</h3>
+        <p>Complete your profile first so we can find your best teammates!</p>
+        <button class="btn-primary" id="go-to-profile-btn" onclick="showPage('profile')">Complete Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FEEDBACK PAGE ==================== -->
+  <div id="page-feedback" class="page">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Share Your <span class="gradient-text">Feedback</span></h1>
+        <p>Help us improve TeamMatch for every student</p>
+      </div>
+
+      <div class="feedback-layout">
+        <!-- Feedback Form -->
+        <form class="feedback-form glass-card" id="feedbackForm" onsubmit="submitFeedback(event)">
+          <h3>Rate Your Experience</h3>
+
+          <div class="rating-section">
+            <label>Overall Satisfaction</label>
+            <div class="star-rating" id="star-overall" data-field="overall">
+              <span class="star" onclick="setRating('overall',1)">★</span>
+              <span class="star" onclick="setRating('overall',2)">★</span>
+              <span class="star" onclick="setRating('overall',3)">★</span>
+              <span class="star" onclick="setRating('overall',4)">★</span>
+              <span class="star" onclick="setRating('overall',5)">★</span>
+            </div>
+          </div>
+
+          <div class="rating-section">
+            <label>Match Quality</label>
+            <div class="star-rating" id="star-match" data-field="match">
+              <span class="star" onclick="setRating('match',1)">★</span>
+              <span class="star" onclick="setRating('match',2)">★</span>
+              <span class="star" onclick="setRating('match',3)">★</span>
+              <span class="star" onclick="setRating('match',4)">★</span>
+              <span class="star" onclick="setRating('match',5)">★</span>
+            </div>
+          </div>
+
+          <div class="rating-section">
+            <label>Ease of Use</label>
+            <div class="star-rating" id="star-ease" data-field="ease">
+              <span class="star" onclick="setRating('ease',1)">★</span>
+              <span class="star" onclick="setRating('ease',2)">★</span>
+              <span class="star" onclick="setRating('ease',3)">★</span>
+              <span class="star" onclick="setRating('ease',4)">★</span>
+              <span class="star" onclick="setRating('ease',5)">★</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="teammateName">Teammate You Matched With (optional)</label>
+            <input type="text" id="teammateName" placeholder="Enter their name" />
+          </div>
+
+          <div class="form-group">
+            <label for="feedbackText">What worked well? What could be improved?</label>
+            <textarea id="feedbackText" rows="4" placeholder="Share your thoughts..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Would you recommend TeamMatch?</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="recommend" value="yes" /> Yes, definitely!</label>
+              <label class="radio-label"><input type="radio" name="recommend" value="maybe" /> Maybe</label>
+              <label class="radio-label"><input type="radio" name="recommend" value="no" /> Not yet</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary btn-full" id="submit-feedback-btn">Submit Feedback</button>
+        </form>
+
+        <!-- Aggregate Stats -->
+        <div class="feedback-stats">
+          <div class="glass-card stats-card">
+            <h3>Community Ratings</h3>
+            <div class="aggregate-stat">
+              <span class="agg-label">Overall Satisfaction</span>
+              <div class="agg-bar-wrap">
+                <div class="agg-bar" style="--val:88%"></div>
+              </div>
+              <span class="agg-val">4.4 / 5</span>
+            </div>
+            <div class="aggregate-stat">
+              <span class="agg-label">Match Quality</span>
+              <div class="agg-bar-wrap">
+                <div class="agg-bar" style="--val:82%"></div>
+              </div>
+              <span class="agg-val">4.1 / 5</span>
+            </div>
+            <div class="aggregate-stat">
+              <span class="agg-label">Ease of Use</span>
+              <div class="agg-bar-wrap">
+                <div class="agg-bar" style="--val:92%"></div>
+              </div>
+              <span class="agg-val">4.6 / 5</span>
+            </div>
+            <div class="recommend-stat">
+              <div class="recommend-num">94%</div>
+              <div class="recommend-text">would recommend<br />to a classmate</div>
+            </div>
+          </div>
+
+          <div class="glass-card recent-feedback-card">
+            <h3>Recent Feedback</h3>
+            <div id="recentFeedbackList">
+              <div class="feedback-item">
+                <div class="fb-header">
+                  <div class="fb-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2)">A</div>
+                  <div><strong>Alex M.</strong><div class="fb-stars">★★★★★</div></div>
+                </div>
+                <p>"Found my perfect coding partner within 10 minutes. The skill matching is spot on!"</p>
+              </div>
+              <div class="feedback-item">
+                <div class="fb-header">
+                  <div class="fb-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c)">P</div>
+                  <div><strong>Priya S.</strong><div class="fb-stars">★★★★☆</div></div>
+                </div>
+                <p>"Great concept! Would love more filter options for project type."</p>
+              </div>
+              <div class="feedback-item">
+                <div class="fb-header">
+                  <div class="fb-avatar" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">K</div>
+                  <div><strong>Kevin R.</strong><div class="fb-stars">★★★★★</div></div>
+                </div>
+                <p>"The schedule matching saved us so much back-and-forth. Highly recommend!"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCH DETAIL MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" id="matchModal" onclick="event.stopPropagation()">
+      <button class="modal-close" id="close-modal-btn" onclick="closeModal()">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
